@@ -30,50 +30,29 @@ The pipeline evaluates a grid of **12 scenarios**:
 └── README.md           # Project overview and instructions
 
 
-## **Running the Simulation**
+How to Run the Simulation with {targets}
+1. Open the Project & Restore Packages
+Download or clone this repository and double-click the .Rproj file to open it in RStudio (this sets the working directory to the project root).
 
-### **1. Restore the R environment**
+In the R Console, restore the exact package environment from renv.lock:
 
-This project uses `{renv}` to ensure package versions are consistent across environments.
-
-Open the project in RStudio and run:
-
-```r
-install.packages("renv")  # If not already installed
+R
 renv::restore()
+(If {renv} is not installed yet, run install.packages("renv") first.)
 
+2. Run the Pipeline
+Execute the full simulation workflow using targets::tar_make():
 
-
-This restores the package versions recorded in `renv.lock`.
-
-### **2. Run the targets pipeline**
-
-Make sure your working directory is the project root (the directory containing `_targets.R`).
-
-Run the complete pipeline with:
-
-```r
+R
 targets::tar_make()
+targets::tar_make() reads _targets.R, runs all simulation repetitions across the 12 scenarios (results), aggregates the operating characteristics (operating_characteristics), and generates the summary figure (plot).
 
+3. View the Results
+Once the pipeline finishes, inspect the saved outputs from the _targets/ cache using targets::tar_read():
 
-This executes all simulation replicates, calculates the operating characteristics, and generates the plot.
-3. Inspect the results
-To check which targets have been successfully built:
-targets::tar_visnetwork()
-
-
-To retrieve the simulated operating characteristics:
+R
+# View the summary table (Type I error at delta = 0, empirical power at delta > 0)
 targets::tar_read(operating_characteristics)
 
-
-To retrieve the generated plot:
+# Display the Power vs. Delta plot
 targets::tar_read(plot)
-
-
-To inspect the pipeline status:
-targets::tar_status()
-
-
-The pipeline uses {targets} to track dependencies and avoid rerunning targets that are already up to date. To rerun the entire pipeline from scratch, use:
-targets::tar_destroy()
-targets::tar_make()
