@@ -29,30 +29,29 @@ The pipeline evaluates a grid of **12 scenarios**:
 ├── R/                  # Modular R functions (data generation, t-test, summaries, plotting)
 └── README.md           # Project overview and instructions
 ```
+## How to Run the Simulation with `{targets}`
 
-How to Run the Simulation with {targets}
-1. Open the Project & Restore Packages
-Download or clone this repository and double-click the .Rproj file to open it in RStudio (this sets the working directory to the project root).
+### 1. Open the Project & Restore Packages
+1. Download or clone this repository and double-click the `.Rproj` file to open it in RStudio (this sets the working directory to the project root).
+2. In the R Console, restore the exact package environment from `renv.lock`:
+   ```r
+   renv::restore()
+   ```
+   *(If `{renv}` is not installed yet, run `install.packages("renv")` first.)*
 
-In the R Console, restore the exact package environment from renv.lock:
-
-R
-renv::restore()
-(If {renv} is not installed yet, run install.packages("renv") first.)
-
-2. Run the Pipeline
-Execute the full simulation workflow using targets::tar_make():
-
-R
+### 2. Run the Pipeline
+Execute the full simulation workflow using `targets::tar_make()`:
+```r
 targets::tar_make()
-targets::tar_make() reads _targets.R, runs all simulation repetitions across the 12 scenarios (results), aggregates the operating characteristics (operating_characteristics), and generates the summary figure (plot).
+```
+`targets::tar_make()` reads `_targets.R`, runs all simulation repetitions across the 12 scenarios (`results`), aggregates the operating characteristics (`operating_characteristics`), and generates the summary figure (`plot`).
 
-3. View the Results
-Once the pipeline finishes, inspect the saved outputs from the _targets/ cache using targets::tar_read():
-
-R
+### 3. View the Results
+Once the pipeline finishes, inspect the saved outputs from the `_targets/` cache using `targets::tar_read()`:
+```r
 # View the summary table (Type I error at delta = 0, empirical power at delta > 0)
 targets::tar_read(operating_characteristics)
 
 # Display the Power vs. Delta plot
 targets::tar_read(plot)
+```
