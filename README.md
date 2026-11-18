@@ -28,3 +28,52 @@ The pipeline evaluates a grid of **12 scenarios**:
 ├── renv.lock           # Exact R package versions for environment reproducibility
 ├── R/                  # Modular R functions (data generation, t-test, summaries, plotting)
 └── README.md           # Project overview and instructions
+
+
+## **Running the Simulation**
+
+### **1. Restore the R environment**
+
+This project uses `{renv}` to ensure package versions are consistent across environments.
+
+Open the project in RStudio and run:
+
+```r
+install.packages("renv")  # If not already installed
+renv::restore()
+
+
+
+This restores the package versions recorded in `renv.lock`.
+
+### **2. Run the targets pipeline**
+
+Make sure your working directory is the project root (the directory containing `_targets.R`).
+
+Run the complete pipeline with:
+
+```r
+targets::tar_make()
+
+
+This executes all simulation replicates, calculates the operating characteristics, and generates the plot.
+3. Inspect the results
+To check which targets have been successfully built:
+targets::tar_visnetwork()
+
+
+To retrieve the simulated operating characteristics:
+targets::tar_read(operating_characteristics)
+
+
+To retrieve the generated plot:
+targets::tar_read(plot)
+
+
+To inspect the pipeline status:
+targets::tar_status()
+
+
+The pipeline uses {targets} to track dependencies and avoid rerunning targets that are already up to date. To rerun the entire pipeline from scratch, use:
+targets::tar_destroy()
+targets::tar_make()
