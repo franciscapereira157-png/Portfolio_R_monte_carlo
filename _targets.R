@@ -21,5 +21,13 @@ list(
     ),
     values = scenarios(),
     reps = n_reps
+  ),
+  tar_target(
+    name = operating_characteristics,
+    command = oc_summarise(results)
+  ),
+  tar_target(
+    name = plot,
+    command = plot_oc(operating_characteristics)
   )
 )
