@@ -28,7 +28,7 @@ The pipeline evaluates a grid of **12 scenarios**:
 ├── renv.lock           # Exact R package versions for environment reproducibility
 ├── R/                  # Modular R functions (data generation, t-test, summaries, plotting)
 └── README.md           # Project overview and instructions
-
+```
 
 How to Run the Simulation with {targets}
 1. Open the Project & Restore Packages
